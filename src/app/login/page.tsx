@@ -5,8 +5,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast";
-import Loader from "@/components/common/Loader";
-
+import Loader from "@/components/common/Loader"
 
 const NextLoginPage = () => {
   const router = useRouter();
