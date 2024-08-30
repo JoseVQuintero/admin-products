@@ -1,5 +1,8 @@
+import React from "react";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+
 //import ECommerce from "@/components/Dashboard/E-commerce";
-import Login from "@/app/login/page";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
@@ -9,12 +12,18 @@ export const metadata: Metadata = {
   description: "This is Next.js Home for TailAdmin Dashboard Template",
 };
 
-export default function Home() {
+const Dashboard = async () => {
+  const session = await getServerSession();
+  if (!session) {
+    redirect("/");
+  }
   return (
     <>
-      {/* <DefaultLayout> */}
-        <Login />
-     {/*  </DefaultLayout> */}
+      <DefaultLayout>
+        <></>
+      </DefaultLayout>
     </>
   );
-}
+};
+
+export default Dashboard;
