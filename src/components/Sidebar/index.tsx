@@ -7,6 +7,7 @@ import Image from "next/image";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import pageProducts from "@/app/dashboard/products/page";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -38,7 +39,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Profile",
-        route: "/profile",
+        route: "/dashboard/profile",
       },
       {
         icon: (
@@ -70,7 +71,7 @@ const menuGroups = [
         ),
         label: "Products",
         route: "#",
-        children: [{ label: "List", route: "/" }],
+        children: [{ label: "List", route: "/dashboard/products" }],
       },
       /*{
         icon: (
