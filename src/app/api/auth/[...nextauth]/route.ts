@@ -4,7 +4,7 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
-import User from "@/models/User";
+import Users from "@/models/Users";
 import connect from "@/utils/db";
 
 export const authOptions: any = {
@@ -20,7 +20,7 @@ export const authOptions: any = {
       async authorize(credentials: any) {
         await connect();
         try {
-          const user = await User.findOne({ email: credentials.email });
+          const user = await Users.findOne({ email: credentials.email });
           if (user) {
             const isPasswordCorrect = await bcrypt.compare(
               credentials.password,
@@ -53,9 +53,9 @@ export const authOptions: any = {
       if (account?.provider == "github") {
         await connect();
         try {
-          const existingUser = await User.findOne({ email: user.email });
+          const existingUser = await Users.findOne({ email: user.email });
           if (!existingUser) {
-            const newUser = new User({
+            const newUser = new Users({
               email: user.email,
             });
 
@@ -72,9 +72,9 @@ export const authOptions: any = {
       if(account?.provider == "google"){
         await connect();
         try {
-          const existingUser = await User.findOne({ email: user.email });
+          const existingUser = await Users.findOne({ email: user.email });
           if (!existingUser) {
-            const newUser = new User({
+            const newUser = new Users({
               email: user.email,
             });
 
