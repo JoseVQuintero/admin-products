@@ -6,8 +6,13 @@ import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast";
 import Loader from "@/components/common/Loader"
+import { redirect } from "next/navigation";
 
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+
+//export default function NextLoginPage({ children }: Readonly<{ children: React.ReactNode; }>) {
 const NextLoginPage = () => {
+
   const router = useRouter();
   const [error, setError] = useState("");
   // const session = useSession();
@@ -25,6 +30,7 @@ const NextLoginPage = () => {
   };
 
   const handleSubmit = async (e: any) => {
+
     e.preventDefault();
     const email = e.target[0].value;
     const password = e.target[1].value;
@@ -54,14 +60,17 @@ const NextLoginPage = () => {
     } else {
       setError("");
       toast.success("Successful login");
-    }
+    }    
+
   };
 
   if (sessionStatus === "loading") {
     return <h1>{ <Loader/> }</h1>;
   }
-  return (
-    sessionStatus !== "authenticated" && (
+  
+  return (<>
+    {/* {sessionStatus === "authenticated" && <DefaultLayout><></></DefaultLayout>} */}
+    {sessionStatus !== "authenticated" && (
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
@@ -305,7 +314,7 @@ const NextLoginPage = () => {
         </div>
       </div>
     )
-  );
+    }</>);
 };
 
 export default NextLoginPage;

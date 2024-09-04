@@ -8,7 +8,6 @@ import { signIn, useSession } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 import Loader from "@/components/common/Loader";
 
-
 const RegisterPage = () => {
   const [error, setError] = useState("");
   const router = useRouter();
@@ -24,8 +23,11 @@ const RegisterPage = () => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     return emailRegex.test(email);
   };
+
   const handleSubmit = async (e: any) => {
+
     e.preventDefault();
+
     const email = e.target[1].value;
     const password = e.target[2].value;
     const confirmPassword = e.target[3].value;
@@ -49,6 +51,7 @@ const RegisterPage = () => {
     }
 
     try {
+
       const res = await fetch("/api/register", {
         method: "POST",
         headers: {
@@ -59,25 +62,32 @@ const RegisterPage = () => {
           password,
         }),
       });
+
       if (res.status === 400) {
         toast.error("This email is already registered")
         setError("The email already in use");
       }
+      
       if (res.status === 200) {
         setError("");
         toast.success("Registration successful");
         router.push("/login");
       }
+
     } catch (error) {
+
       toast.error("Error, try again")
       setError("Error, try again");
       console.log(error);
+
     }
+
   };
 
   if (sessionStatus === "loading") {
     return <h1>{<Loader />}</h1>;
   }
+
   return (
     sessionStatus !== "authenticated" && (
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

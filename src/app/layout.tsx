@@ -9,6 +9,10 @@ import "flatpickr/dist/flatpickr.min.css";
 import "@/css/satoshi.css";
 import "@/css/style.css";
 import React, { useEffect, useState } from "react";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import Products from "@/app/dashboard/products/page";
+import Login from "@/app/login/page";
+import Dashboard from "@/app/dashboard/page";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,18 +23,20 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const session = await getServerSession();
+}: Readonly<{ children: React.ReactNode }>) {
+  const session = await getServerSession(); 
+
   return (
     <html lang="en">
-      <body suppressHydrationWarning={true}>        
-          <div className="dark:bg-boxdark-2 dark:text-bodydark">
-            <SessionProvider session={session}>
-            <Providers>{children}</Providers>
-            </SessionProvider>
-          </div>        
+      <body suppressHydrationWarning={true}>
+        <div className="dark:bg-boxdark-2 dark:text-bodydark">
+          <SessionProvider session={session}>
+            <Providers>
+              {/* {!session ? <Login /> : <DefaultLayout>{children}</DefaultLayout>} */}
+              <DefaultLayout>{children}</DefaultLayout>
+            </Providers>
+          </SessionProvider>
+        </div>
       </body>
     </html>
   );
