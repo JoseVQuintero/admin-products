@@ -9,7 +9,7 @@ export const GET = async (request: any) => {
   await connect();
 
   const products = await Products.find();
-  console.log(products);
+  //console.log(products);
 
   /* 
   if (existingUser) {
