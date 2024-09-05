@@ -26,6 +26,7 @@ const headersData = [
 const Products = () => {
 
   const [error, setError] = useState("");
+  const [clickCons, seClickCons] = useState("");
   const [search, setSearch] = useState({ value: "", type: "description" });
   const [recordsData, setRecordsData] = useState([]);
   const [dataProducts, setDataProducts] = useState([]);
@@ -42,6 +43,7 @@ const Products = () => {
   const fetchData = useCallback(async () => {
 
       try {
+        
         const res = await fetch("/api/products", {
           method: "GET",
           headers: {
@@ -76,19 +78,8 @@ const Products = () => {
   return (
     <>
       <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-        <div className="max-w-full overflow-x-auto">
-          <div className='w-full flex flex-row items-center p-5'>
-              <div className='flex flex-row items-center gap-4'>
-                  <span className='cursor-pointer font-semibold' onClick={() => prevPage()}>prev</span>
-                  <div className='flex flex-row items-center'>
-                      <span>{currentPage}</span>
-                      <span>/</span>
-                      <span>{numberOfPages}</span>
-                  </div>
-                  <span className='cursor-pointer font-semibold' onClick={() => nextPage()}>next</span>
-              </div>
-          </div>
-          <table className="w-full table-auto text-xs">
+        <div className="h-100 max-w-full overflow-x-auto">          
+          <table className="w-full text-xs overflow-x-auto">
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 {headersData.map((v: any) =>
@@ -100,27 +91,66 @@ const Products = () => {
             </thead>
             <tbody>
               {records.map((row) => {
-                  return <tr>{headersData.map((k: any) => <td>{eval(k.field)}</td>)}</tr>
+                  return <tr>{headersData.map((k: any) => <td className={k.class}>{eval(k.field)}</td>)}</tr>
                 }
               )}
             </tbody>
-          </table>
-          
+          </table>          
         </div>
+        <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
+            <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Mostrando <span className="font-semibold text-gray-900 dark:text-white">{`${currentPage} / ${numberOfPages}`}</span> de <span className="font-semibold text-gray-900 dark:text-white">{`${dataProducts.length} Registros`}</span></span>
+              <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+                  <li>
+                  {
+                      clickCons === "prev" ?
+                          <a href="#" aria-current="page" className="flex items-center justify-center px-3 h-8 text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 border border-gray-300  dark:border-gray-700 dark:bg-gray-700 dark:text-white" onClick={() => prevPage()}>Prev</a>
+                          :
+                          <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" onClick={() => prevPage()}>Prev</a>
+                  }
+                  </li>
+                  {[1,2,3,4,5].map((n)=>
+                    <li>
+                      {
+                        currentPage === n ?
+                          <a href="#" aria-current="page" className="flex items-center justify-center px-3 h-8 text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 border border-gray-300  dark:border-gray-700 dark:bg-gray-700 dark:text-white" onClick={() => numberPage(n)}>{ n }</a>
+                          :
+                          <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" onClick={() => numberPage(n)}>{ n }</a>
+                      }
+                    </li>
+                  )}                  
+                  <li>
+                    {
+                      clickCons === "next" ?
+                          <a href="#" aria-current="page" className="flex items-center justify-center px-3 h-8 text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 border border-gray-300  dark:border-gray-700 dark:bg-gray-700 dark:text-white" onClick={() => nextPage()}>{`Next${(currentPage>5?`(${currentPage})`:``)}`}</a>
+                          :
+                          <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" onClick={() => nextPage()}>{`Next${(currentPage>5?`(${currentPage})`:``)}`}</a>
+                    }       
+                  </li>
+              </ul>
+          </nav>
       </div>
     </>
   );
 
   function nextPage(){
       if (currentPage != numberOfPages){
-          setCurrentPage(prev => prev + 1)
+        setCurrentPage(prev => prev + 1)
+        seClickCons("next");
       }
   }
 
   function prevPage(){
       if (currentPage != 1){
-          setCurrentPage(prev => prev - 1)
+        setCurrentPage(prev => prev - 1)
+        seClickCons("prev");
       }
+  }
+
+  function numberPage(num:any) {
+    //if (currentPage != 1) {
+    setCurrentPage(num);
+    seClickCons("number");
+    //}
   }
 
 };
