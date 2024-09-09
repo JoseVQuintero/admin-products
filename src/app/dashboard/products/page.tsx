@@ -60,7 +60,6 @@ const Products = () => {
 
   }, []);
 
-  // the useEffect is only there to call `fetchData` at the right time
   useEffect(() => {
     fetchData().then((res: any) => { setDataProducts(res); setRecordsData(res); }).catch(console.error);
   }, [fetchData]);  
@@ -90,15 +89,15 @@ const Products = () => {
               </tr>
             </thead>
             <tbody>
-              {records.map((row) => {
-                  return <tr>{headersData.map((k: any) => <td className={k.class}>{eval(k.field)}</td>)}</tr>
+              {records.map((row,index) => {
+                return <tr>{headersData.map((k: any) => <td key={k.id} className={k.class}>{eval(k.field)}</td>)}</tr>
                 }
               )}
             </tbody>
           </table>          
         </div>
         <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-            <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Mostrando <span className="font-semibold text-gray-900 dark:text-white">{`${currentPage} / ${numberOfPages}`}</span> de <span className="font-semibold text-gray-900 dark:text-white">{`${dataProducts.length} Registros`}</span></span>
+            <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Mostrando <span className="font-semibold text-gray-900 dark:text-white">{`${currentPage} / ${numberOfPages}`}</span> de <span className="font-semibold text-gray-900 dark:text-white">{`${recordsData.length} Registros`}</span></span>
               <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
                   <li>
                   {
